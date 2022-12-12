@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<Class>
+    <Student>
+        <FirstName>Harry</FirstName>
+        <MiddleName type="optional"></MiddleName>
+        <LastName>Phillips</LastName>
+        <RollNo>12</RollNo>
+        <Section>A</Section>
+    </Student>
+    
+     <Student>
+      <FirstName>Jabby</FirstName>
+      <MiddleName type="optional">Rst</MiddleName>
+      <LastName>Blubber</LastName>
+      <RollNo>19</RollNo>
+      <Section>B</Section>
+  </Student>
+  
+  <Student>
+      <FirstName>Hooter</FirstName>
+      <MiddleName type="optional">Hi</MiddleName>
+      <LastName>Scooter</LastName>
+      <RollNo>11</RollNo>
+      <Section>A</Section>
+  </Student>
+</Class>
