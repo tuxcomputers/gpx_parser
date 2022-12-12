@@ -17,10 +17,8 @@
             </trkpt>
             <trkpt lat="-27.12081" lon="152.956622">
                 <time>2022-12-04T23:41:30.000Z</time>
-                <ele>73.11</ele>
             </trkpt>
             <trkpt lat="-27.120878" lon="152.9566">
-                <time>2022-12-04T23:41:31.000Z</time>
                 <ele>73.85</ele>
             </trkpt>
         </trkseg>
