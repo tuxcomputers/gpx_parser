@@ -1,7 +1,18 @@
 #!/usr/bin/python
-import sys, datetime
+import sys, datetime, math
 from pathlib import Path
 from xml.dom import minidom
+
+class trackPoint:
+    def __init__(tp, lat, lon, dtm, ele, prevPoint = ''):
+        tp.lat       = lat
+        tp.lat       = lon
+        tp.lat       = dtm
+        tp.lat       = ele
+        tp.prevPoint = prevPoint
+
+        if prevPoint:
+            print ('It was given a previous point')
 
 dateFormat = '%Y-%m-%dT%H:%M:%S'
 
@@ -38,50 +49,54 @@ xmlFile = open(fileName)
 parsedFile = minidom.parse(xmlFile)
 
 # Read the tracks
-tracks = parsedFile.getElementsByTagName('trk')
+tracksList = parsedFile.getElementsByTagName('trk')
 
+# Create the track array
+trackArray = []
 trackNum = 0
 
-# tracks  = ''
-# segment = ''
-# points  = ''
-# point   = ''
-
-for segment in tracks:
-    points = segment.getElementsByTagName('trkpt')
+# Loop through each track
+for track in tracksList:
+    points = track.getElementsByTagName('trkpt')
 
     pointNum = 0
 
+    # Loop though each point in the track
     for point in points:
+        
         pointNum += 1
+
+        # Read the Lat and Lon
         pointLat = float(point.getAttribute('lat'))
         pointLon = float(point.getAttribute('lon'))
+        
+        # Read the time and elevation
         pointTimeObj = point.getElementsByTagName('time')
         pointElevObj = point.getElementsByTagName('ele')
+        pointElev = 0.0
 
         # Skip the point if there is no time for the point
         if not pointTimeObj:
+            print ('Track', str(trackNum) + ': Point', str(pointNum) + ' has no time and cannot be included')
             continue
 
         pointTime = pointTimeObj[0].firstChild.data
-        pointElev = float(pointElevObj[0].firstChild.data)
+        if pointElevObj:
+            pointElev = float(pointElevObj[0].firstChild.data)
 
         pointTime = pointTime[0:18]
 
         dt = datetime.datetime.strptime(pointTime, dateFormat)
 
-        print ('Track', str(trackNum) + ': Point', str(pointNum) + ':-', pointLat, pointLon, dt, pointElev)
+        if pointNum == 1:
+            curPoint = trackPoint(pointLat, pointLon, dt, pointElev)
+        else:
+            curPoint = trackPoint(pointLat, pointLon, dt, pointElev, pastPoint)
+
+        pastPoint = curPoint
+
+        # print ('Track', str(trackNum) + ': Point', str(pointNum) + ':-', pointLat, pointLon, dt, pointElev)
 
     trackNum += 1
     print()
-
-
-
-
-# for staff in staffs:
-#         staff_id = staff.getAttribute("id")
-#         name = staff.getElementsByTagName("name")[0]
-#         salary = staff.getElementsByTagName("salary")[0]
-#         print("id:% s, name:% s, salary:% s" %
-#               (staff_id, name.firstChild.data, salary.firstChild.data))
 
