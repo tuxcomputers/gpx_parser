@@ -181,28 +181,28 @@ function Calculate(oblate) {
             // but use angles based on subtraction.
             // Point A will be at x=radius, y=0, z=0.
             // Vector difference B-A will have dz = N/S component, dy = E/W component.                
-            var br = RotateGlobe(b, a, bp.radius, ap.radius, oblate);
-            if (br.z * br.z + br.y * br.y > 1.0e-6) {
-                var theta = Math.atan2(br.z, br.y) * 180.0 / Math.PI;
-                var azimuth = 90.0 - theta;
-                if (azimuth < 0.0) {
-                    azimuth += 360.0;
-                }
-                if (azimuth > 360.0) {
-                    azimuth -= 360.0;
-                }
-                $('div_Azimuth').innerHTML = azimuth.toFixed(4) + '&deg;';
-            }
+            // var br = RotateGlobe(b, a, bp.radius, ap.radius, oblate);
+            // if (br.z * br.z + br.y * br.y > 1.0e-6) {
+            //     var theta = Math.atan2(br.z, br.y) * 180.0 / Math.PI;
+            //     var azimuth = 90.0 - theta;
+            //     if (azimuth < 0.0) {
+            //         azimuth += 360.0;
+            //     }
+            //     if (azimuth > 360.0) {
+            //         azimuth -= 360.0;
+            //     }
+            //     $('div_Azimuth').innerHTML = azimuth.toFixed(4) + '&deg;';
+            // }
 
-            var bma = NormalizeVectorDiff(bp, ap);
-            if (bma != null) {
-                // Calculate altitude, which is the angle above the horizon of B as seen from A.
-                // Almost always, B will actually be below the horizon, so the altitude will be negative.
-                // The dot product of bma and norm = cos(zenith_angle), and zenith_angle = (90 deg) - altitude.
-                // So altitude = 90 - acos(dotprod).
-                var altitude = 90.0 - (180.0 / Math.PI) * Math.acos(bma.x * ap.nx + bma.y * ap.ny + bma.z * ap.nz);
-                $('div_Altitude').innerHTML = altitude.toFixed(4).replace(/-/g, '&minus;') + '&deg;';
-            }
+            // var bma = NormalizeVectorDiff(bp, ap);
+            // if (bma != null) {
+            //     // Calculate altitude, which is the angle above the horizon of B as seen from A.
+            //     // Almost always, B will actually be below the horizon, so the altitude will be negative.
+            //     // The dot product of bma and norm = cos(zenith_angle), and zenith_angle = (90 deg) - altitude.
+            //     // So altitude = 90 - acos(dotprod).
+            //     var altitude = 90.0 - (180.0 / Math.PI) * Math.acos(bma.x * ap.nx + bma.y * ap.ny + bma.z * ap.nz);
+            //     $('div_Altitude').innerHTML = altitude.toFixed(4).replace(/-/g, '&minus;') + '&deg;';
+            // }
         }
     }
 }
