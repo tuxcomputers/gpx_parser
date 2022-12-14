@@ -1,6 +1,13 @@
 import math
 
-def locationToPoint(p_lat, p_lon, p_ele):
+def locationToPoint(myPoint):
+    
+    p_lat = myPoint.lat
+    p_lon = myPoint.lon
+    p_ele = myPoint.ele
+
+    # print (p_lat, p_lon, p_ele)
+
     lat    = p_lat * math.pi / 180
     lon    = p_lon * math.pi / 180
     radius = earthRadiusInMeters(lat)
@@ -8,8 +15,8 @@ def locationToPoint(p_lat, p_lon, p_ele):
 
     cosLon = math.cos(lon);
     sinLon = math.sin(lon);
-    cosLat = math.cos(clat);
-    sinLat = math.sin(clat);
+    cosLat = math.cos(glat);
+    sinLat = math.sin(glat);
     x = radius * cosLon * cosLat;
     y = radius * sinLon * cosLat;
     z = radius * sinLat;
@@ -26,8 +33,11 @@ def locationToPoint(p_lat, p_lon, p_ele):
     x += p_ele * nx;
     y += p_ele * ny;
     z += p_ele * nz;
+
+    returnVar = { 'x': x, 'y': y, 'z': z, 'radius': radius, 'nx': nx, 'ny': ny, 'nz': nz }
+    # print(returnVar)
     
-    return { 'x': x, 'y': y, 'z': z, 'radius': radius, 'nx': nx, 'ny': ny, 'nz': nz }
+    return returnVar
 
 
 def earthRadiusInMeters(latitudeRadians):
@@ -51,4 +61,10 @@ def geocentricLatitude(lat):
     glat = math.atan((1.0 - e2) * math.tan(lat))
     return glat
 
-
+def distance(ap, bp):
+    dx = ap["x"] - bp["x"]
+    dy = ap["y"] - bp["y"]
+    dz = ap["z"] - bp["z"]
+    dis = math.sqrt(dx * dx + dy * dy + dz * dz)
+    rnd = round(dis, 2)
+    return rnd
