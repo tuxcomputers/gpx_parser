@@ -1,5 +1,9 @@
 import math
 
+# These calculations were stolen (with permission) from Don Cross.
+# I copied the Javascript functions converting them to Python
+# http://cosinekitty.com/compass.html
+
 def locationToPoint(myPoint):
     
     p_lat = myPoint.lat
