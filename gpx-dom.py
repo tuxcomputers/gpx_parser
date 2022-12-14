@@ -1,18 +1,23 @@
 #!/usr/bin/python
-import sys, datetime, math
+import sys, datetime
 from pathlib import Path
 from xml.dom import minidom
+from gpsCalc import *
 
 class trackPoint:
     def __init__(tp, lat, lon, dtm, ele, prevPoint = ''):
         tp.lat       = lat
-        tp.lat       = lon
-        tp.lat       = dtm
-        tp.lat       = ele
+        tp.lon       = lon
+        tp.dtm       = dtm
+        tp.ele       = ele
         tp.prevPoint = prevPoint
+        tp.dis       = 0
 
         if prevPoint:
-            print ('It was given a previous point')
+            ap = locationToPoint(tp)
+            bp = locationToPoint(prevPoint)
+            tp.dis = distance(ap, bp)
+
 
 dateFormat = '%Y-%m-%dT%H:%M:%S'
 
@@ -31,6 +36,7 @@ if argsNum != 2:
 
 # Read the file name from the command line argument
 fileName = sys.argv[1]
+# fileName = 'samples/example-relive.gpx'
 
 # Read the file object
 fileItself = Path(fileName)
@@ -60,12 +66,11 @@ for track in tracksList:
     points = track.getElementsByTagName('trkpt')
 
     pointNum = 0
+    pointArray = []
 
     # Loop though each point in the track
     for point in points:
         
-        pointNum += 1
-
         # Read the Lat and Lon
         pointLat = float(point.getAttribute('lat'))
         pointLon = float(point.getAttribute('lon'))
@@ -88,15 +93,32 @@ for track in tracksList:
 
         dt = datetime.datetime.strptime(pointTime, dateFormat)
 
-        if pointNum == 1:
+        if pointNum == 0:
             curPoint = trackPoint(pointLat, pointLon, dt, pointElev)
         else:
             curPoint = trackPoint(pointLat, pointLon, dt, pointElev, pastPoint)
 
+        pointArray.append(curPoint)
+
         pastPoint = curPoint
 
-        # print ('Track', str(trackNum) + ': Point', str(pointNum) + ':-', pointLat, pointLon, dt, pointElev)
+        # if pointNum == 3 or pointNum == 2:
+        #     print ('Track', str(trackNum) + ': Point', str(pointNum) + ':-', pointLat, pointLon, dt, pointElev)
+        
+        pointNum += 1
 
+
+    trackArray.append(pointArray)
     trackNum += 1
     print()
+
+trackLen = len(trackArray[0])
+
+pointCount = 0
+while pointCount < 15:
+    point = trackArray[0][pointCount]
+    print (point.dis)
+
+    pointCount += 1
+
 
